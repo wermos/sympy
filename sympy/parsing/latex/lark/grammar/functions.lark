@@ -1,0 +1,58 @@
+%import .tokens -> FUNC_EXP
+%import .tokens -> (FUNC_LOG, FUNC_LG, UNDERSCORE, DIGIT)
+%import .tokens -> FUNC_SQRT
+%import .tokens -> (BANG, CMD_OVERLINE)
+%import .tokens -> BAR
+%import .tokens -> (L_FLOOR, R_FLOOR)
+%import .tokens -> (L_CEIL, R_CEIL)
+%import .tokens -> (FUNC_MIN, FUNC_MAX, L_PAREN, R_PAREN)
+%import .tokens -> (CMD_LANGLE, CMD_RANGLE)
+
+exponential: FUNC_EXP _expression
+
+log: FUNC_LOG _expression
+    | FUNC_LN _expression
+    | FUNC_LG _expression
+    | FUNC_LOG UNDERSCORE (DIGIT | _oneletter_symbol) _expression
+    | FUNC_LOG UNDERSCORE group_curly_parentheses _expression
+
+square_root: FUNC_SQRT group_curly_parentheses
+    | FUNC_SQRT group_square_brackets group_curly_parentheses
+
+factorial: _expression BANG
+
+conjugate: CMD_OVERLINE group_curly_parentheses
+    | CMD_OVERLINE DIGIT
+
+abs: BAR _expression BAR
+
+floor: L_FLOOR _expression R_FLOOR
+
+ceil: L_CEIL _expression R_CEIL
+
+min: FUNC_MIN L_PAREN list_of_expressions R_PAREN
+
+max: FUNC_MAX L_PAREN list_of_expressions R_PAREN
+
+bra: CMD_LANGLE _expression BAR
+
+ket: BAR _expression CMD_RANGLE
+
+inner_product: CMD_LANGLE _expression BAR _expression CMD_RANGLE
+
+// outer_product: BAR _expression CMD_RANGLE CMD_LANGLE _expression BAR
+
+list_of_expressions: _expression ("," _expression)*
+
+function_applied: _oneletter_symbol L_PAREN list_of_expressions R_PAREN
+
+_function: function_applied
+    | abs | floor | ceil
+    | _trigonometric_function | _inverse_trigonometric_function
+    | _trigonometric_function_power
+    | _hyperbolic_trigonometric_function | _inverse_hyperbolic_trigonometric_function
+    | exponential
+    | log
+    | square_root
+    | factorial
+    | conjugate

@@ -1,0 +1,102 @@
+// basic binary operators
+ADD: "+"
+SUB: "-"
+MUL: "*"
+DIV: "/"
+
+// tokens with distinct left and right symbols
+L_BRACE: "{"
+R_BRACE: "}"
+L_BRACE_LITERAL: "\\{"
+R_BRACE_LITERAL: "\\}"
+L_BRACKET: "["
+R_BRACKET: "]"
+L_CEIL: "\\lceil"
+R_CEIL: "\\rceil"
+L_FLOOR: "\\lfloor"
+R_FLOOR: "\\rfloor"
+L_PAREN: "("
+R_PAREN: ")"
+
+// limit, integral, sum, and product symbols
+FUNC_LIM:  "\\lim"
+LIM_APPROACH_SYM: "\\to" | "\\rightarrow" | "\\Rightarrow" | "\\longrightarrow" | "\\Longrightarrow"
+FUNC_INT:  "\\int" | "\\intop"
+FUNC_SUM:  "\\sum"
+FUNC_PROD: "\\prod"
+
+// common functions
+FUNC_EXP:  "\\exp"
+FUNC_LOG:  "\\log"
+FUNC_LN:   "\\ln"
+FUNC_LG:   "\\lg"
+
+// trigonometric functions
+FUNC_SIN:  "\\sin"
+FUNC_COS:  "\\cos"
+FUNC_TAN:  "\\tan"
+FUNC_CSC:  "\\csc"
+FUNC_SEC:  "\\sec"
+FUNC_COT:  "\\cot"
+
+// inverse trigonometric functions
+FUNC_ARCSIN: "\\arcsin"
+FUNC_ARCCOS: "\\arccos"
+FUNC_ARCTAN: "\\arctan"
+FUNC_ARCCSC: "\\arccsc"
+FUNC_ARCSEC: "\\arcsec"
+FUNC_ARCCOT: "\\arccot"
+
+// hyperbolic trigonometric functions
+FUNC_SINH: "\\sinh"
+FUNC_COSH: "\\cosh"
+FUNC_TANH: "\\tanh"
+FUNC_ARSINH: "\\arsinh"
+FUNC_ARCOSH: "\\arcosh"
+FUNC_ARTANH: "\\artanh"
+
+FUNC_SQRT: "\\sqrt"
+
+// miscellaneous symbols
+CMD_TIMES: "\\times"
+CMD_CDOT:  "\\cdot"
+CMD_DIV:   "\\div"
+CMD_FRAC:  "\\frac" | "\\dfrac" | "\\tfrac" | "\\nicefrac"
+CMD_BINOM: "\\binom" | "\\dbinom" | "\\tbinom"
+CMD_OVERLINE: "\\overline"
+
+CMD_MATHIT: "\\mathit"
+
+CMD_INFTY: "\\infty"
+
+BANG: "!"
+BAR: "|"
+CARET: "^"
+COLON: ":"
+UNDERSCORE: "_"
+
+// relational symbols
+EQUAL: "="
+NOT_EQUAL: "\\neq" | "\\ne"
+LT: "<"
+LTE: "\\leq" | "\\le" | "\\leqslant"
+GT: ">"
+GTE: "\\geq" | "\\ge" | "\\geqslant"
+
+DIV_SYMBOL: CMD_DIV | DIV
+MUL_SYMBOL: MUL | CMD_TIMES | CMD_CDOT
+
+DIFFERENTIAL: "d" | "\\text{d}" | "\\mathrm{d}"
+
+SYMBOL: /[a-zA-Z]/
+BASIC_SUBSCRIPTED_SYMBOL: /([a-zA-Z])_(([A-Za-z0-9]|[a-zA-Z]+)|\{([A-Za-z0-9]|[a-zA-Z]+)\})/
+
+%import .greek_symbols -> GREEK_SYMBOL
+
+SYMBOL_WITH_GREEK_SUBSCRIPT: /([a-zA-Z])_/ GREEK_SYMBOL | /([a-zA-Z])_/ L_BRACE GREEK_SYMBOL R_BRACE
+// best to define the variant with braces like that instead of shoving it all into one case like in
+// /([a-zA-Z])_/ L_BRACE? GREEK_SYMBOL R_BRACE? because then we can easily error out on input like
+// r"h_{\theta"
+GREEK_SUBSCRIPTED_SYMBOL: GREEK_SYMBOL /_(([A-Za-z0-9]|[a-zA-Z]+)|\{([A-Za-z0-9]|[a-zA-Z]+)\})/
+
+%import common.DIGIT -> DIGIT
