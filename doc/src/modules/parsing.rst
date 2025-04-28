@@ -127,7 +127,7 @@ interpretations.
 
 The Lark-based parser exposes a number of internals which allow the user to customize
 the parser's behavior. For example, the user can specify their own `\mathrm{\LaTeX}`
-grammar by passing the path to the grammar file to the ``LarkLaTeXParser`` while
+grammar by passing the path to the grammar file to the `LarkLaTeXParser` while
 instantiating the parser.
 
 The user can also specify their own custom transformer class to the `LarkLaTeXParser`
