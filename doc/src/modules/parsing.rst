@@ -227,7 +227,11 @@ Matrix Parsing
 ~~~~~~~~~~~~~~
 
 Matrices inside a ``bmatrix``, ``pmatrix``, ``matrix``, and ``array`` environments
-are fully supported, and work as expected.
+are supported. The ``bmatrix`` and ``pmatrix`` environments can be used on their
+own, but the ``matrix`` and ``array`` environments have to be surrounded by
+parentheses or brackets, like ``\left( \begin{matrix} ... \end{matrix} \right)``
+or ``[\begin{array}{cc} ... \end{array}]``, since they do not draw any delimiters
+themselves. The ``smallmatrix`` environment is not supported.
 
 For example::
 
