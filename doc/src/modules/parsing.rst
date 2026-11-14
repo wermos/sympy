@@ -150,21 +150,28 @@ interpretations.
 When the input is ambiguous, ``parse_latex_lark`` (and ``parse_latex`` with
 ``backend="lark"``) does not return a SymPy expression. It returns a
 ``lark.Tree`` whose ``data`` is ``"_ambig"`` and whose children are the
-possible readings. For example, ::
+possible readings. For example:
 
-    parse_latex_lark(r"f(x)")
+>>> from sympy.parsing.latex import parse_latex_lark, parse_latex_lark_all
+>>> parse_latex_lark(r"f(x)")
+Tree('_ambig', [f(x), f*x])
 
-gives us ::
+``parse_latex_lark_all`` returns the readings as a list instead, and a list with
+one element when the input is not ambiguous:
 
-    Tree('_ambig', [f(x), f*x])
-
-``parse_latex_lark_all`` returns the readings as a list instead, which is
-``[f(x), f*x]`` here, and a list with one element when the input is not
-ambiguous.
+>>> parse_latex_lark_all(r"f(x)")
+[f(x), f*x]
+>>> parse_latex_lark_all(r"x + y")
+[x + y]
 
 Since any single letter followed by parentheses can be read both ways, this
 also happens inside larger expressions like `\int_a^b f(x) \, dx`. Writing
-the function as ``\operatorname{f}(x)`` makes it unambiguous.
+the function as ``\operatorname{f}(x)`` makes it unambiguous:
+
+>>> parse_latex_lark_all(r"\int_a^b f(x) \, dx")
+[Integral(f(x), (x, a, b)), Integral(f*x, (x, a, b))]
+>>> parse_latex_lark(r"\int_a^b \operatorname{f}(x) \, dx")
+Integral(f(x), (x, a, b))
 
 The Lark-based parser exposes a number of internals which allow the user to customize
 the parser's behavior. For example, the user can specify their own `\mathrm{\LaTeX}`
