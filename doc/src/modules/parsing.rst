@@ -216,15 +216,15 @@ may be added in the future:
 * Partial derivatives.
 * Double and triple integrals.
 
-Matrices
---------
+Lark `\mathrm{\LaTeX}` Parser Matrices
+""""""""""""""""""""""""""""""""""""""
 
 The Lark-based LaTeX parser also supports parsing matrices. However, there are
 certain assumptions built into the default parser, which we must keep in mind
 if we wish to extract the full value out of it.
 
 Matrix Parsing
-^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~
 
 Matrices inside a ``bmatrix``, ``pmatrix``, ``matrix``, and ``array`` environments
 are fully supported, and work as expected.
@@ -257,7 +257,7 @@ gives us the output of ::
   [sin(theta),  cos(theta)]])
 
 Matrix Operations
-^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~
 
 Basic matrix operations between matrices like matrix-matrix addition and subtraction,
 multiplying a matrix by a scalar, and matrix-matrix multiplication are supported.
