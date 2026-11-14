@@ -305,12 +305,16 @@ Other common matrix operations are also supported:
     [-I, 4]])
 
   as expected.
-* Traces: The default parser requires the use of `\backslash \mathrm{trace}`
-  in the `\mathrm{\LaTeX}` code to parse it correctly.
-* Adjugates: The default parser requires the use of `\backslash \mathrm{adjugate}`
-  in the `\mathrm{\LaTeX}` code to parse it correctly.
-* Determinants: The parser supports parsing `\det` as well as `\begin{vmatrix} \dots \end{vmatrix}`
-  as a determinant. For example, both ::
+* Traces: The default parser supports ``\operatorname{tr}``,
+  ``\operatorname{trace}`` and `\backslash \mathrm{trace}` for the trace. The
+  trace is not evaluated, so the result is a ``Trace`` of the matrix. Calling
+  ``.doit()`` on it computes the trace.
+* Adjugates: The default parser supports ``\operatorname{adj}``,
+  ``\operatorname{adjugate}`` and `\backslash \mathrm{adjugate}` for the
+  adjugate. The adjugate is evaluated.
+* Determinants: The parser supports parsing `\det`, ``\operatorname{det}``, as
+  well as `\begin{vmatrix} \dots \end{vmatrix}` as a determinant. The
+  determinant is evaluated. For example, both ::
 
     parse_latex(r"\det(\begin{pmatrix} 1 & 2 \\ 3 & 4 \end{pmatrix})", backend="lark")
 
