@@ -236,8 +236,8 @@ For example::
 gives us ::
 
   Matrix([
-    [1, 3],
-    [2, 4]])
+  [1, 2],
+  [3, 4]])
 
 The Lark-based parser also supports parsing multiline matrix definitions. For example, ::
 
@@ -269,13 +269,13 @@ Other common matrix operations are also supported:
 
     parse_latex(r"\begin{bmatrix} 1 & 2 \\ 3 & 4 \end{bmatrix}^T", backend="lark")
 
-  returns ::
+  returns the unevaluated transpose ``Transpose(Matrix([[1, 2], [3, 4]]))``.
+  Calling ``.doit()`` on it gives ::
 
     Matrix([
     [1, 3],
     [2, 4]])
 
-  as expected.
 * Conjugate transpose (often denoted by raising a matrix to a superscript
   of `H`). The default parser only supports the superscript of `H`. For example, ::
 
