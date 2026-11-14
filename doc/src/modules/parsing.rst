@@ -182,10 +182,13 @@ Here is a list of the things which are supported:
 * All the trigonometric functions and their inverses trigonometric functions.
   Powers like ``\sin^4`` are also supported. The power `-1` is interpreted as the
   inverse function (i.e., ``\sin^{-1} x`` is interpreted as ``\arcsin x``).
-* Hyperbolic trigonometric functions (currently only `\sinh`, `\cosh`, and
-  `\tanh`) and their inverses. As mentioned in the previous point, powers like
-  ``\tanh^2`` are also supported, and `-1` is interpreted as the inverse function
-  (i.e., ``\tanh^{-1} x`` is interpreted as ``\arctanh x``).
+* Hyperbolic trigonometric functions (`\sinh`, `\cosh`, `\tanh`, `\coth`,
+  ``\sech`` and ``\csch``) and their inverses. The inverses of `\sinh`, `\cosh`
+  and `\tanh` can be written as ``\arsinh`` or ``\arcsinh``, and so on. As
+  mentioned in the previous point, powers like ``\tanh^2`` are also supported,
+  and `-1` is interpreted as the inverse function (i.e., ``\tanh^{-1} x`` is
+  interpreted as ``\arctanh x``). This is also the only way to write the
+  inverses of `\coth`, ``\sech`` and ``\csch``.
 * ``AppliedFunctions``, like `f(x, y, z)`, and functions named with
   ``\operatorname``: `\operatorname{sin} x` is the sine and
   `\operatorname{erf}(x)` the error function, while a name that is not known,
