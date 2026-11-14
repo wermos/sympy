@@ -39,10 +39,10 @@ class LarkLaTeXParser:
         it uses the default grammar, which is in ``grammar/latex.lark``, relative to
         the ``sympy/parsing/latex/lark/`` directory.
 
-    transformer : str, optional
+    transformer : class, optional
 
-        The name of the Transformer class to use. If set to ``None``, it uses the
-        default transformer class, which is :py:func:`TransformToSymPyExpr`.
+        The Transformer class to use. If set to ``None``, it uses the default
+        transformer class, which is :py:func:`TransformToSymPyExpr`.
 
     """
     def __init__(self, print_debug_output=False, transform=True, grammar_file=None, transformer=None):

@@ -58,8 +58,8 @@ class TransformToSymPyExpr(Transformer):
     **This class is never supposed to be used directly.**
 
     In order to tweak the behavior of this class, it has to be subclassed and then after
-    the required modifications are made, the name of the new class should be passed to
-    the :py:class:`LarkLaTeXParser` class by using the ``transformer`` argument in the
+    the required modifications are made, the new class should be passed to the
+    :py:class:`LarkLaTeXParser` class by using the ``transformer`` argument in the
     constructor.
 
     Parameters
