@@ -265,6 +265,12 @@ Matrix Operations
 
 Basic matrix operations between matrices like matrix-matrix addition and subtraction,
 multiplying a matrix by a scalar, and matrix-matrix multiplication are supported.
+The results are not evaluated. For example, ::
+
+  parse_latex(r"\begin{pmatrix} 1 & 2 \\ 3 & 4 \end{pmatrix} + \begin{pmatrix} 1 & 2 \\ 3 & 4 \end{pmatrix}", backend="lark")
+
+returns a ``MatAdd`` of the two matrices instead of the sum. Calling ``.doit()``
+on the result computes it.
 
 Other common matrix operations are also supported:
 
