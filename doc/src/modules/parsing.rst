@@ -114,6 +114,14 @@ However, running::
 
 will raise an ``lark.exceptions.UnexpectedEOF`` exception.
 
+Input that does not fit the grammar raises the exceptions of Lark, like
+``lark.exceptions.UnexpectedEOF`` and ``lark.exceptions.UnexpectedCharacters``.
+A command that the parser does not know, like ``\mathbf`` or ``\partial``,
+raises a ``LaTeXParsingError`` with a message like ``Unknown command
+\mathbf`` before the input is parsed. Input that parses but cannot be turned
+into an expression, like the determinant of something that is not a matrix,
+also raises a ``LaTeXParsingError``.
+
 Apart from that, there are a couple of extra things that the Lark-based parser
 supports that the ANTLR-based parser does not. They are:
 
