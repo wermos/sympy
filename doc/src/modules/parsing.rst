@@ -201,7 +201,10 @@ Here is a list of the things which are supported:
   binomials (``\binom``, ``\tbinom``, ``\dbinom``) are supported.
 * Integrals, both definite and indefinite. When the integrand is a fraction,
   having the differential in the numerator is allowed. The differential is
-  allowed to be ``d``, ``\text{d}``, or ``\mathrm{d}``.
+  allowed to be ``d``, ``\text{d}``, or ``\mathrm{d}``. Double and triple
+  integrals can be written by repeating ``\int``, like
+  `\int_0^1 \int_0^2 f \, dx \, dy`, where the innermost integral is the one
+  next to the integrand.
 * Derivatives in one variable, like `\dfrac{d}{dx} (\sin x)`, `\dfrac{dy}{dx}`
   and `\dfrac{d^2}{dx^2} x^3`. The differential has to be a plain ``d``.
   Partial derivatives are not supported yet.
@@ -220,7 +223,7 @@ Here is a(n incomplete) list of things which are currently not supported, which
 may be added in the future:
 
 * Partial derivatives.
-* Double and triple integrals.
+* The ``\iint`` and ``\iiint`` commands for double and triple integrals.
 
 Lark `\mathrm{\LaTeX}` Parser Matrices
 """"""""""""""""""""""""""""""""""""""
