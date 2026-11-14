@@ -209,9 +209,9 @@ Here is a list of the things which are supported:
 * Sums and products with simple conditions. For example, `\sum\limits_{k=0}^n k^2`
   is allowed because the condition on `k` is simple. An expression like
   `\sum\limits_{d \mid n} d^2` is not allowed because the condition on `d` in
-  the subscript is complicated. Expressions with the index variable specified
-  in the superscript are also allowed. For example, `\prod\limits_{k=0}^{k=n} k^2`
-  is parsed correctly.
+  the subscript is complicated. The index variable cannot be repeated in the
+  superscript, so `\prod\limits_{k=0}^{k=n} k^2` is not allowed, but
+  `\prod\limits_{k=0}^{n} k^2` is.
 * Bra (e.g., `| x \rangle`), and Ket (e.g., `\langle p |`) notation. Parsing
   Inner (e.g., `\langle x | y \rangle`) and Outer Products (e.g.,
   `| y \rangle \langle x |`) is also supported.
