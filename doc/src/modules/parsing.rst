@@ -185,6 +185,8 @@ Here is a list of the things which are supported:
 * Expressions with `+`, `-`, `*`, `/`, and alternative operators like ``\cdot``,
   ``\times``, ``\div``, etc. If two expressions are next to each other, like `xy`
   or `(\sin x)(\cos t)`, then it is treated as implicit multiplication.
+  Implicit multiplication binds more tightly than `/` and ``\div``, so `1/2x`
+  is ``1/(2*x)``. Writing `\frac{1}{2} x` gives ``x/2``.
 * Relations with `<`, `>`, `\le`, `\ge`, `=`, and `\ne`, including chains like
   `a < b \le c`, and membership in a number set like `x \in \mathbb{R}`.
   `\le` can also be written as ``\leq``, ``\leqslant`` or ``\leqq``, `\ge` as
@@ -203,7 +205,8 @@ Here is a list of the things which are supported:
     * `\ln`,
     * `\lg`, which is the logarithm to base 10,
     * `\exp`,
-    * absolute value (e.g., `|x|`). Note that `||x||` is parsed as ``Abs(Abs(x))``.
+    * absolute value (e.g., `|x|`). Note that `||x||` is parsed as the absolute
+      value of `|x|`, not as a norm.
     * floor (e.g., `\lfloor x \rfloor`) and ceiling (e.g., `\lceil x \rceil`),
     * `\min` and `\max`,
     * degrees, like `x^\circ`, which are converted to radians, so `90^\circ`
