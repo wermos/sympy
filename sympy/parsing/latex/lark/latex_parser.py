@@ -256,10 +256,20 @@ def parse_latex_lark(s: str, locals=None):
         ``\operatorname{name}``. The value is an expression for a constant,
         and for a function it is what is called with the arguments.
 
+    Returns
+    =======
+
+    The SymPy expression that ``s`` means. When ``s`` is ambiguous, a
+    ``lark.Tree`` whose ``data`` is ``"_ambig"`` is returned instead, with the
+    readings of ``s`` as its children. :func:`parse_latex_lark_all` returns the
+    readings as a list.
+
     Examples
     ========
 
     >>> from sympy.parsing.latex.lark import parse_latex_lark
+    >>> parse_latex_lark(r"f(x)")
+    Tree('_ambig', [f(x), f*x])
     >>> from sympy import Function, Symbol, pi
     >>> parse_latex_lark(r"2\pi").has(pi)
     True
