@@ -200,14 +200,24 @@ Here is a list of the things which are supported:
 * Symbols which consist of one letter, e.g., ``a``, ``b``, ``x``, etc.
   Greek symbols and symbols with subscripts are also supported. Numbers are also
   supported, as is ``\infty``. `\pi` and `\mathrm{e}` are the constants. A
-  plain ``e`` is read as a symbol, not as Euler's number.
+  plain ``e`` is read as a symbol, not as Euler's number:
+
+  >>> parse_latex(r"\mathrm{e}^x + e^x", backend="lark")
+  e**x + exp(x)
+
 * Symbols with multiple letters are supported, as long as they are wrapped in
   ``\mathit``.
 * Expressions with `+`, `-`, `*`, `/`, and alternative operators like ``\cdot``,
   ``\times``, ``\div``, etc. If two expressions are next to each other, like `xy`
   or `(\sin x)(\cos t)`, then it is treated as implicit multiplication.
   Implicit multiplication binds more tightly than `/` and ``\div``, so `1/2x`
-  is ``1/(2*x)``. Writing `\frac{1}{2} x` gives ``x/2``.
+  is ``1/(2*x)``. Writing `\frac{1}{2} x` gives ``x/2``:
+
+  >>> parse_latex(r"1/2x", backend="lark")
+  1/(2*x)
+  >>> parse_latex(r"\frac{1}{2} x", backend="lark")
+  x/2
+
 * Relations with `<`, `>`, `\le`, `\ge`, `=`, and `\ne`, including chains like
   `a < b \le c`, and membership in a number set like `x \in \mathbb{R}`.
   `\le` can also be written as ``\leq``, ``\leqslant`` or ``\leqq``, `\ge` as
@@ -215,7 +225,15 @@ Here is a list of the things which are supported:
   as the ``And`` of the relations between neighbouring terms, so `a < b \le c`
   gives ``(a < b) & (b <= c)``. The number sets are `\mathbb{N}`,
   `\mathbb{Z}`, `\mathbb{Q}`, `\mathbb{R}` and `\mathbb{C}`, and ``\notin``
-  is also supported.
+  is also supported:
+
+  >>> from sympy import And, Le, Lt, symbols
+  >>> a, b, c = symbols("a b c")
+  >>> parse_latex(r"a < b \le c", backend="lark") == And(Lt(a, b), Le(b, c))
+  True
+  >>> parse_latex(r"x \notin \mathbb{Z}", backend="lark")
+  ~Contains(x, Integers)
+
 * Commonly used functions like
 
     * Square roots,
@@ -233,11 +251,23 @@ Here is a list of the things which are supported:
     * degrees, like `x^\circ`, which are converted to radians, so `90^\circ`
       gives ``pi/2``.
 
-* Complex numbers via the use of `\backslash \mathrm{imaginaryunit}`. For example::
+  For example:
 
-    parse_latex(r"5 + 3\imaginaryunit", backend="lark")
+  >>> parse_latex(r"\log_2 x", backend="lark")
+  log(x)/log(2)
+  >>> parse_latex(r"\lg x", backend="lark")
+  log(x)/log(10)
+  >>> parse_latex(r"||x||", backend="lark")
+  Abs(x)
+  >>> parse_latex(r"90^\circ", backend="lark")
+  pi/2
 
-  gives us the output of ``5 + 3*I``. A plain ``i`` is read as a symbol, and
+* Complex numbers via the use of `\backslash \mathrm{imaginaryunit}`. For example:
+
+  >>> parse_latex(r"5 + 3\imaginaryunit", backend="lark")
+  5 + 3*I
+
+  A plain ``i`` is read as a symbol, and
   ``\mathrm{i}`` is not supported. ``\imaginaryunit`` is not a standard
   `\mathrm{\LaTeX}` command, so it usually has to be defined in the document,
   for example with ``\newcommand{\imaginaryunit}{i}``.
@@ -273,19 +303,35 @@ Here is a list of the things which are supported:
   allowed to be ``d``, ``\text{d}``, or ``\mathrm{d}``. Double and triple
   integrals can be written by repeating ``\int``, like
   `\int_0^1 \int_0^2 f \, dx \, dy`, where the innermost integral is the one
-  next to the integrand.
+  next to the integrand:
+
+  >>> parse_latex(r"\int_0^1 \int_0^2 f \, dx \, dy", backend="lark")
+  Integral(f, (x, 0, 2), (y, 0, 1))
+
 * Derivatives in one variable, like `\dfrac{d}{dx} (\sin x)`, `\dfrac{dy}{dx}`
   and `\dfrac{d^2}{dx^2} x^3`. The differential has to be a plain ``d``.
   Partial derivatives are not supported yet. Outside of derivatives and
   integrals, ``d`` is an ordinary symbol, so `dx` on its own is ``d*x``, and
-  `\dfrac{dx}{x}` outside of an integral simplifies to ``d``.
+  `\dfrac{dx}{x}` outside of an integral simplifies to ``d``:
+
+  >>> parse_latex(r"\dfrac{d^2}{dx^2} x^3", backend="lark")
+  Derivative(x**3, (x, 2))
+  >>> parse_latex(r"\int \dfrac{dx}{x}", backend="lark")
+  Integral(1/x, x)
+  >>> parse_latex(r"\dfrac{dx}{x}", backend="lark")
+  d
+
 * Limits in one variable. E.g., `\lim\limits_{t\to 3^{+}} \sin t`.
 * Sums and products with simple conditions. For example, `\sum\limits_{k=0}^n k^2`
   is allowed because the condition on `k` is simple. An expression like
   `\sum\limits_{d \mid n} d^2` is not allowed because the condition on `d` in
   the subscript is complicated. The index variable cannot be repeated in the
   superscript, so `\prod\limits_{k=0}^{k=n} k^2` is not allowed, but
-  `\prod\limits_{k=0}^{n} k^2` is.
+  `\prod\limits_{k=0}^{n} k^2` is:
+
+  >>> parse_latex(r"\prod\limits_{k=0}^{n} k^2", backend="lark")
+  Product(k**2, (k, 0, n))
+
 * Bra (e.g., `| x \rangle`), and Ket (e.g., `\langle p |`) notation. Parsing
   Inner (e.g., `\langle x | y \rangle`) and Outer Products (e.g.,
   `| y \rangle \langle x |`) is also supported.
