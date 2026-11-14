@@ -84,12 +84,14 @@ ANTLR `\mathrm{\LaTeX}` Parser Caveats
 """"""""""""""""""""""""""""""""""""""
 
 Currently, the parser may fail to fully parse an expression, but not throw a
-warning::
+warning. For example, it will simply find ``x`` in ``x -``:
 
-    parse_latex(r'x -')
+>>> from sympy.parsing.latex import parse_latex
+>>> parse_latex(r'x -')
+x
 
-will simply find ``x``. What is covered by this behavior will almost certainly
-change between releases, and become stricter, more relaxed, or some mix.
+What is covered by this behavior will almost certainly change between releases,
+and become stricter, more relaxed, or some mix.
 
 Lark Backend
 ^^^^^^^^^^^^
@@ -104,15 +106,18 @@ Lark `\mathrm{\LaTeX}` Parser Features
 One thing to note is that the Lark backend does not support ill-formed expressions,
 and it does not try to fix any sort of common mistakes that may have occurred. For
 example, as mentioned in :ref:`the earlier section <ANTLR parser caveats>`, the
-ANTLR-based parser would simply find ``x`` if we run::
+ANTLR-based parser would simply find ``x`` if we run:
 
-    parse_latex(r'x -', backend='antlr')
+>>> parse_latex(r'x -', backend='antlr')
+x
 
-However, running::
+However, the Lark-based parser will raise an ``lark.exceptions.UnexpectedEOF``
+exception:
 
-    parse_latex(r'x -', backend='lark')
-
-will raise an ``lark.exceptions.UnexpectedEOF`` exception.
+>>> parse_latex(r'x -', backend='lark')
+Traceback (most recent call last):
+...
+lark.exceptions.UnexpectedEOF: Unexpected end-of-input.
 
 Input that does not fit the grammar raises the exceptions of Lark, like
 ``lark.exceptions.UnexpectedEOF`` and ``lark.exceptions.UnexpectedCharacters``.
@@ -120,7 +125,16 @@ A command that the parser does not know, like ``\mathbf`` or ``\partial``,
 raises a ``LaTeXParsingError`` with a message like ``Unknown command
 \mathbf`` before the input is parsed. Input that parses but cannot be turned
 into an expression, like the determinant of something that is not a matrix,
-also raises a ``LaTeXParsingError``.
+also raises a ``LaTeXParsingError``:
+
+>>> parse_latex(r'\mathbf{x}', backend='lark')
+Traceback (most recent call last):
+...
+sympy.parsing.latex.errors.LaTeXParsingError: Unknown command \mathbf
+>>> parse_latex(r'\det x', backend='lark')
+Traceback (most recent call last):
+...
+sympy.parsing.latex.errors.LaTeXParsingError: Cannot take determinant of non-matrix.
 
 Apart from that, there are a couple of extra things that the Lark-based parser
 supports that the ANTLR-based parser does not. They are:
