@@ -271,6 +271,16 @@ may be added in the future:
 
 * Partial derivatives.
 * The ``\iint`` and ``\iiint`` commands for double and triple integrals.
+* Division written with a colon, like ``a:b``, which the ANTLR-based parser
+  supports.
+* A symbol or a group in parentheses right after `\min(\dots)` or
+  `\max(\dots)`, like `\min(x, y) z`. Writing `z \min(x, y)` or
+  `\min(x, y) \cdot z` works.
+* Symbols with multiple letters written with ``\mathrm`` or ``\text``, and
+  subscripts on symbols written with ``\mathit``, like ``\mathit{ab}_c``.
+* Font commands and accents like ``\mathbf``, ``\vec``, ``\hat`` and ``\dot``.
+* Commands for the real part, the imaginary part and the argument, like
+  ``\Re``, ``\Im`` and ``\arg``, other than through ``\operatorname``.
 
 Lark `\mathrm{\LaTeX}` Parser Function Arguments
 """"""""""""""""""""""""""""""""""""""""""""""""
