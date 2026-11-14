@@ -244,7 +244,9 @@ Here is a list of the things which are supported:
   next to the integrand.
 * Derivatives in one variable, like `\dfrac{d}{dx} (\sin x)`, `\dfrac{dy}{dx}`
   and `\dfrac{d^2}{dx^2} x^3`. The differential has to be a plain ``d``.
-  Partial derivatives are not supported yet.
+  Partial derivatives are not supported yet. Outside of derivatives and
+  integrals, ``d`` is an ordinary symbol, so `dx` on its own is ``d*x``, and
+  `\dfrac{dx}{x}` outside of an integral simplifies to ``d``.
 * Limits in one variable. E.g., `\lim\limits_{t\to 3^{+}} \sin t`.
 * Sums and products with simple conditions. For example, `\sum\limits_{k=0}^n k^2`
   is allowed because the condition on `k` is simple. An expression like
