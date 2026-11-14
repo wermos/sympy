@@ -106,8 +106,9 @@ doctest_list = [
     # ipython
     '*ipython*',
 
-    # antlr, lfortran, clang
+    # antlr, lark, lfortran, clang
     'sympy/parsing/',
+    'doc/src/modules/parsing.rst',
 
     # codegen
     'sympy/codegen/',

@@ -722,6 +722,12 @@ def _get_doctest_blacklist():
         blacklist.extend([
             "sympy/parsing/autolev/__init__.py",
             "sympy/parsing/latex/_parse_latex_antlr.py",
+            "doc/src/modules/parsing.rst",
+        ])
+
+    if import_module('lark') is None:
+        blacklist.extend([
+            "doc/src/modules/parsing.rst",
         ])
 
     if import_module('lfortran') is None:
