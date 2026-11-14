@@ -407,44 +407,46 @@ parentheses or brackets, like ``\left( \begin{matrix} ... \end{matrix} \right)``
 or ``[\begin{array}{cc} ... \end{array}]``, since they do not draw any delimiters
 themselves. The ``smallmatrix`` environment is not supported.
 
-For example::
+For example:
 
-  parse_latex(r"\begin{bmatrix} 1 & 2 \\ 3 & 4 \end{bmatrix}", backend="lark")
+>>> parse_latex(r"\begin{bmatrix} 1 & 2 \\ 3 & 4 \end{bmatrix}", backend="lark")
+Matrix([
+[1, 2],
+[3, 4]])
+>>> parse_latex(r"\left( \begin{matrix} 1 & 2 \\ 3 & 4 \end{matrix} \right)", backend="lark")
+Matrix([
+[1, 2],
+[3, 4]])
 
-gives us ::
+The Lark-based parser also supports parsing multiline matrix definitions. For example:
 
-  Matrix([
-  [1, 2],
-  [3, 4]])
-
-The Lark-based parser also supports parsing multiline matrix definitions. For example, ::
-
-  s = r"""
-  \begin{bmatrix}
-  \cos \theta & -\sin \theta \\
-  \sin \theta & \cos \theta
-  \end{bmatrix}
-  """
-
-  parse_latex(s, backend="lark")
-
-gives us the output of ::
-
-  Matrix([
-  [cos(theta), -sin(theta)],
-  [sin(theta),  cos(theta)]])
+>>> s = r"""
+... \begin{bmatrix}
+... \cos \theta & -\sin \theta \\
+... \sin \theta & \cos \theta
+... \end{bmatrix}
+... """
+>>> parse_latex(s, backend="lark")
+Matrix([
+[cos(theta), -sin(theta)],
+[sin(theta),  cos(theta)]])
 
 Matrix Operations
 ~~~~~~~~~~~~~~~~~
 
 Basic matrix operations between matrices like matrix-matrix addition and subtraction,
 multiplying a matrix by a scalar, and matrix-matrix multiplication are supported.
-The results are not evaluated. For example, ::
+The results are not evaluated. For example, the sum of two matrices is a
+``MatAdd`` instead of the sum, and calling ``.doit()`` on the result computes it:
 
-  parse_latex(r"\begin{pmatrix} 1 & 2 \\ 3 & 4 \end{pmatrix} + \begin{pmatrix} 1 & 2 \\ 3 & 4 \end{pmatrix}", backend="lark")
-
-returns a ``MatAdd`` of the two matrices instead of the sum. Calling ``.doit()``
-on the result computes it.
+>>> M = r"\begin{pmatrix} 1 & 2 \\ 3 & 4 \end{pmatrix}"
+>>> expr = parse_latex(M + " + " + M, backend="lark")
+>>> type(expr).__name__
+'MatAdd'
+>>> expr.doit()
+Matrix([
+[2, 4],
+[6, 8]])
 
 Other common matrix operations are also supported:
 
@@ -452,51 +454,61 @@ Other common matrix operations are also supported:
   default parser supports the superscript of `T`, as well as primes like
   ``A'`` and ``A^\prime``. An even number of primes, like ``A''``, gives back the
   matrix itself. Other notations like ``A^\top``, ``A^\intercal`` and
-  ``A^{\mathsf{T}}`` are not supported. For example, ::
+  ``A^{\mathsf{T}}`` are not supported. The transpose is not evaluated, and
+  calling ``.doit()`` on it computes it. For example:
 
-    parse_latex(r"\begin{bmatrix} 1 & 2 \\ 3 & 4 \end{bmatrix}^T", backend="lark")
-
-  returns the unevaluated transpose ``Transpose(Matrix([[1, 2], [3, 4]]))``.
-  Calling ``.doit()`` on it gives ::
-
-    Matrix([
-    [1, 3],
-    [2, 4]])
+  >>> expr = parse_latex(M + "^T", backend="lark")
+  >>> type(expr).__name__
+  'Transpose'
+  >>> expr.doit()
+  Matrix([
+  [1, 3],
+  [2, 4]])
+  >>> parse_latex(M + "''", backend="lark")
+  Matrix([
+  [1, 2],
+  [3, 4]])
 
 * Conjugate transpose (often denoted by raising a matrix to a superscript
   of `H`). The default parser supports the superscript of `H`, as well as stars
   like ``A^{*}`` and ``A^\ast``. The star has to be in braces or written as
   ``\ast``, since ``A^*`` does not parse. An even number of stars gives back the
   matrix itself. ``A^\dagger`` is not supported. Unlike the transpose, the
-  conjugate transpose is evaluated. For example, ::
+  conjugate transpose is evaluated. For example:
 
-    parse_latex(r"\begin{pmatrix} 1 & \imaginaryunit \\ 3 & 4 \end{pmatrix}^H", backend="lark")
+  >>> parse_latex(r"\begin{pmatrix} 1 & \imaginaryunit \\ 3 & 4 \end{pmatrix}^H", backend="lark")
+  Matrix([
+  [ 1, 3],
+  [-I, 4]])
 
-  returns ::
-
-    Matrix([
-    [ 1, 3],
-    [-I, 4]])
-
-  as expected.
 * Traces: The default parser supports ``\operatorname{tr}``,
   ``\operatorname{trace}`` and `\backslash \mathrm{trace}` for the trace. The
   trace is not evaluated, so the result is a ``Trace`` of the matrix. Calling
-  ``.doit()`` on it computes the trace.
+  ``.doit()`` on it computes the trace:
+
+  >>> expr = parse_latex(r"\operatorname{tr}" + M, backend="lark")
+  >>> type(expr).__name__
+  'Trace'
+  >>> expr.doit()
+  5
+
 * Adjugates: The default parser supports ``\operatorname{adj}``,
   ``\operatorname{adjugate}`` and `\backslash \mathrm{adjugate}` for the
-  adjugate. The adjugate is evaluated.
+  adjugate. The adjugate is evaluated:
+
+  >>> parse_latex(r"\operatorname{adj}" + M, backend="lark")
+  Matrix([
+  [ 4, -2],
+  [-3,  1]])
+
 * Determinants: The parser supports parsing `\det`, ``\operatorname{det}``, as
   well as `\begin{vmatrix} \dots \end{vmatrix}` as a determinant. The
-  determinant is evaluated. For example, both ::
+  determinant is evaluated. For example:
 
-    parse_latex(r"\det(\begin{pmatrix} 1 & 2 \\ 3 & 4 \end{pmatrix})", backend="lark")
-
-  and ::
-
-    parse_latex(r"\begin{vmatrix} 1 & 2 \\ 3 & 4 \end{vmatrix}", backend="lark")
-
-  give us an output of `-2`.
+  >>> parse_latex(r"\det(" + M + ")", backend="lark")
+  -2
+  >>> parse_latex(r"\begin{vmatrix} 1 & 2 \\ 3 & 4 \end{vmatrix}", backend="lark")
+  -2
 
 Lark `\mathrm{\LaTeX}` Parser Functions
 """""""""""""""""""""""""""""""""""""""
