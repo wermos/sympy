@@ -125,6 +125,25 @@ because the `f` might be a function or a variable name. Lark has the capability 
 point out these ambiguities and notify the user, or even return all possible
 interpretations.
 
+When the input is ambiguous, ``parse_latex_lark`` (and ``parse_latex`` with
+``backend="lark"``) does not return a SymPy expression. It returns a
+``lark.Tree`` whose ``data`` is ``"_ambig"`` and whose children are the
+possible readings. For example, ::
+
+    parse_latex_lark(r"f(x)")
+
+gives us ::
+
+    Tree('_ambig', [f(x), f*x])
+
+``parse_latex_lark_all`` returns the readings as a list instead, which is
+``[f(x), f*x]`` here, and a list with one element when the input is not
+ambiguous.
+
+Since any single letter followed by parentheses can be read both ways, this
+also happens inside larger expressions like `\int_a^b f(x) \, dx`. Writing
+the function as ``\operatorname{f}(x)`` makes it unambiguous.
+
 The Lark-based parser exposes a number of internals which allow the user to customize
 the parser's behavior. For example, the user can specify their own `\mathrm{\LaTeX}`
 grammar by passing the path to the grammar file to the ``LarkLaTeXParser`` while
