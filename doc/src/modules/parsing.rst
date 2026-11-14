@@ -262,6 +262,25 @@ may be added in the future:
 * Partial derivatives.
 * The ``\iint`` and ``\iiint`` commands for double and triple integrals.
 
+Lark `\mathrm{\LaTeX}` Parser Function Arguments
+""""""""""""""""""""""""""""""""""""""""""""""""
+
+Functions like `\sin`, `\ln` and `\exp` are often written without parentheses,
+as in `\sin x`. In that case, it is not always clear how much of what follows
+is the argument of the function. The Lark-based parser reads it as follows:
+
+* A number followed by symbols is one argument, so `\sin 2x` is ``sin(2*x)``.
+* Another function ends the argument, so `\sin x \cos y` is
+  ``sin(x)*cos(y)``, while `\sin \cos x` is ``sin(cos(x))``.
+* Operators end the argument, so `\sin x + y`, `\sin x / y` and
+  `\sin x \cdot y` apply the sine to `x` alone.
+* An argument in parentheses ends there, so `\sin(x) y` is ``sin(x)*y``.
+* Symbols that follow each other, like `\sin xy` or `\sin x y`, are ambiguous,
+  and give the two readings ``sin(x*y)`` and ``y*sin(x)``.
+* A power after the argument is also ambiguous, so both `\sin x^2` and
+  `\sin(x)^2` give the two readings ``sin(x**2)`` and ``sin(x)**2``. Writing
+  `\sin^2 x` or `\sin(x^2)` avoids this.
+
 Lark `\mathrm{\LaTeX}` Parser Matrices
 """"""""""""""""""""""""""""""""""""""
 
