@@ -203,7 +203,14 @@ Here is a list of the things which are supported:
 * ``AppliedFunctions``, like `f(x, y, z)`, and functions named with
   ``\operatorname``: `\operatorname{sin} x` is the sine and
   `\operatorname{erf}(x)` the error function, while a name that is not known,
-  as in `\operatorname{f}(x)`, gives an undefined function.
+  as in `\operatorname{f}(x)`, gives an undefined function. The known names
+  are the names of the trigonometric and hyperbolic functions, ``exp``,
+  ``ln``, ``log``, ``lg``, ``min``, ``max``, ``sqrt``, ``abs``, ``sign`` (or
+  ``sgn``), ``Re``, ``Im``, ``arg``, ``erf``, ``erfc``, ``sinc``, ``det``,
+  ``tr`` (or ``trace``) and ``adj`` (or ``adjugate``). Apart from ``min`` and
+  ``max``, the known functions take one argument. Commands like ``\Re``,
+  ``\Im`` and ``\arg`` are not supported on their own, so the real part is
+  written as ``\operatorname{Re}(z)``.
 * Other readings of the constants and of the functions can be chosen with the
   ``locals`` argument of ``parse_latex_lark``: with
   ``locals={r"\pi": Symbol("pi")}`` the command `\pi` is a symbol and not
