@@ -275,7 +275,10 @@ on the result computes it.
 Other common matrix operations are also supported:
 
 * Transpose (usually denoted by raising a matrix to a superscript of `T`). The
-  default parser only supports the superscript of `T`. For example, ::
+  default parser supports the superscript of `T`, as well as primes like
+  ``A'`` and ``A^\prime``. An even number of primes, like ``A''``, gives back the
+  matrix itself. Other notations like ``A^\top``, ``A^\intercal`` and
+  ``A^{\mathsf{T}}`` are not supported. For example, ::
 
     parse_latex(r"\begin{bmatrix} 1 & 2 \\ 3 & 4 \end{bmatrix}^T", backend="lark")
 
@@ -287,7 +290,11 @@ Other common matrix operations are also supported:
     [2, 4]])
 
 * Conjugate transpose (often denoted by raising a matrix to a superscript
-  of `H`). The default parser only supports the superscript of `H`. For example, ::
+  of `H`). The default parser supports the superscript of `H`, as well as stars
+  like ``A^{*}`` and ``A^\ast``. The star has to be in braces or written as
+  ``\ast``, since ``A^*`` does not parse. An even number of stars gives back the
+  matrix itself. ``A^\dagger`` is not supported. Unlike the transpose, the
+  conjugate transpose is evaluated. For example, ::
 
     parse_latex(r"\begin{pmatrix} 1 & \imaginaryunit \\ 3 & 4 \end{pmatrix}^H", backend="lark")
 
