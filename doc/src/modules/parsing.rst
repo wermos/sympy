@@ -371,6 +371,25 @@ is the argument of the function. The Lark-based parser reads it as follows:
   `\sin(x)^2` give the two readings ``sin(x**2)`` and ``sin(x)**2``. Writing
   `\sin^2 x` or `\sin(x^2)` avoids this.
 
+For example:
+
+>>> parse_latex(r"\sin 2x", backend="lark")
+sin(2*x)
+>>> parse_latex(r"\sin x \cos y", backend="lark")
+sin(x)*cos(y)
+>>> parse_latex(r"\sin \cos x", backend="lark")
+sin(cos(x))
+>>> parse_latex(r"\sin x / y", backend="lark")
+sin(x)/y
+>>> parse_latex(r"\sin(x) y", backend="lark")
+y*sin(x)
+>>> parse_latex_lark_all(r"\sin xy")
+[sin(x*y), y*sin(x)]
+>>> parse_latex_lark_all(r"\sin(x)^2")
+[sin(x**2), sin(x)**2]
+>>> parse_latex(r"\sin^2 x", backend="lark")
+sin(x)**2
+
 Lark `\mathrm{\LaTeX}` Parser Matrices
 """"""""""""""""""""""""""""""""""""""
 
