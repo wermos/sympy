@@ -151,7 +151,8 @@ Here is a list of the things which are supported:
 
 * Symbols which consist of one letter, e.g., ``a``, ``b``, ``x``, etc.
   Greek symbols and symbols with subscripts are also supported. Numbers are also
-  supported, as is ``\infty``. `\pi` and `\mathrm{e}` are the constants.
+  supported, as is ``\infty``. `\pi` and `\mathrm{e}` are the constants. A
+  plain ``e`` is read as a symbol, not as Euler's number.
 * Symbols with multiple letters are supported, as long as they are wrapped in
   ``\mathit``.
 * Expressions with `+`, `-`, `*`, `/`, and alternative operators like ``\cdot``,
@@ -170,12 +171,16 @@ Here is a list of the things which are supported:
     * Square roots,
     * factorials,
     * complex conjugation (like `\overline{z}`)
-    * `\log`,
+    * `\log`, which is the natural logarithm unless a base is given, as in
+      `\log_2 x`,
     * `\ln`,
+    * `\lg`, which is the logarithm to base 10,
     * `\exp`,
     * absolute value (e.g., `|x|`). Note that `||x||` is parsed as ``Abs(Abs(x))``.
     * floor (e.g., `\lfloor x \rfloor`) and ceiling (e.g., `\lceil x \rceil`),
-    * `\min` and `\max`.
+    * `\min` and `\max`,
+    * degrees, like `x^\circ`, which are converted to radians, so `90^\circ`
+      gives ``pi/2``.
 
 * Complex numbers via the use of `\backslash \mathrm{imaginaryunit}`. For example::
 
