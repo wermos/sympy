@@ -159,6 +159,12 @@ Here is a list of the things which are supported:
   or `(\sin x)(\cos t)`, then it is treated as implicit multiplication.
 * Relations with `<`, `>`, `\le`, `\ge`, `=`, and `\ne`, including chains like
   `a < b \le c`, and membership in a number set like `x \in \mathbb{R}`.
+  `\le` can also be written as ``\leq``, ``\leqslant`` or ``\leqq``, `\ge` as
+  ``\geq``, ``\geqslant`` or ``\geqq``, and `\ne` as ``\neq``. A chain is read
+  as the ``And`` of the relations between neighbouring terms, so `a < b \le c`
+  gives ``(a < b) & (b <= c)``. The number sets are `\mathbb{N}`,
+  `\mathbb{Z}`, `\mathbb{Q}`, `\mathbb{R}` and `\mathbb{C}`, and ``\notin``
+  is also supported.
 * Commonly used functions like
 
     * Square roots,
