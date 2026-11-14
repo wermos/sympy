@@ -175,7 +175,10 @@ Here is a list of the things which are supported:
 
     parse_latex(r"5 + 3\imaginaryunit", backend="lark")
 
-  gives us the output of ``5 + 3*I``.
+  gives us the output of ``5 + 3*I``. A plain ``i`` is read as a symbol, and
+  ``\mathrm{i}`` is not supported. ``\imaginaryunit`` is not a standard
+  `\mathrm{\LaTeX}` command, so it usually has to be defined in the document,
+  for example with ``\newcommand{\imaginaryunit}{i}``.
 * All the trigonometric functions and their inverses trigonometric functions.
   Powers like ``\sin^4`` are also supported. The power `-1` is interpreted as the
   inverse function (i.e., ``\sin^{-1} x`` is interpreted as ``\arcsin x``).
